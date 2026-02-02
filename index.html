@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Historia</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <style>
+    :root { --ok:#1a8f2a; --bad:#c40000; --main:#2b7cff; --bg:#f6f7fb; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif; margin: 18px; line-height: 1.35; background: var(--bg); }
+    h1 { margin: 0 0 6px; }
+    .topBar {
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      background:white; border:1px solid #e5e7ef; border-radius:14px; padding:12px;
+      box-shadow: 0 1px 8px rgba(0,0,0,.04);
+    }
+    .badge { padding:6px 10px; border-radius:999px; border:1px solid #ddd; background:#fff; }
+    .badge strong { margin-right:6px; }
+    .tabs { display: flex; gap: 10px; margin: 14px 0; flex-wrap: wrap; }
+    .tabBtn {
+      padding: 10px 14px; border: 1px solid #2a2a2a; background: #fff; cursor: pointer;
+      border-radius: 10px; font-weight: 700;
+    }
+    .tabBtn.active { background: #2a2a2a; color: white; }
+
+    .panel {
+      display: none; border: 1px solid #e5e7ef; padding: 14px; border-radius: 16px;
+      background:white; box-shadow: 0 1px 8px rgba(0,0,0,.04);
+    }
+    .panel.active { display: block; }
+
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .controls { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+    button {
+      padding: 10px 14px; border: none; background: var(--main); color: white; cursor: pointer;
+      border-radius: 12px; font-weight: 800;
+    }
+    button.secondary { background: #666; }
+    button.ghost { background: white; color:#222; border:1px solid #cfd3e0; }
+    button.warn { background: #ffb020; color:#222; }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+
+    .progressWrap { margin: 10px 0 2px; }
+    .progressBar { height: 10px; width: 100%; background: #eef1f8; border-radius: 999px; overflow:hidden; border:1px solid #e3e8f3; }
+    .progressFill { height: 100%; width: 0%; background: var(--main); transition: width .25s ease; }
+    .small { font-size: 0.92em; color: #555; }
+
+    .question {
+      margin: 12px 0; padding: 12px; border: 1px solid #eef0f6; border-radius: 14px;
+      background: #fff;
+    }
+    .question.correct { border-color: rgba(26,143,42,.35); background: rgba(26,143,42,.06); }
+    .question.wrong { border-color: rgba(196,0,0,.35); background: rgba(196,0,0,.05); }
+    .qTitle { font-weight: 900; margin-bottom: 8px; }
+    .answers label { display: block; margin: 6px 0; cursor: pointer; padding:6px 8px; border-radius: 10px; }
+    .answers label:hover { background:#f3f6ff; }
+    input[type="text"] {
+      width: 100%; padding: 10px; border-radius: 12px; border: 1px solid #b8bfd3; font-size: 1em;
+    }
+    .keyAnswer { font-size: 0.92em; margin-top: 8px; color: #222; }
+    .pill { display:inline-block; padding:4px 10px; border-radius: 999px; border:1px solid #ddd; background:#fff; margin: 4px 6px 0 0; }
+    .resultBox {
+      margin-top: 14px; padding: 12px; border-radius: 16px; background: #f7f8fc;
+      border: 1px solid #e3e6f2;
+    }
+    .good { color: var(--ok); font-weight: 900; }
+    .bad { color: var(--bad); font-weight: 900; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width: 780px){ .grid2{ grid-template-columns:1fr; } }
+    .footerNote { margin-top: 10px; font-size: 0.92em; color: #444; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+  </style>
+</head>
+<body>
+
+<h1>Sprawdzian – Dział 4 (Historia, klasa 5) 🔥</h1>
+<p class="small">Tryb „na wypasie”: timer, losowanie, podświetlanie, powtórka błędów, tolerancja w otwartych ✅</p>
+
+<div class="topBar">
+  <span class="badge"><strong>Timer:</strong> <span id="timerText" class="mono">--:--</span></span>
+  <span class="badge"><strong>Najlepszy wynik:</strong> <span id="bestScore">brak</span></span>
+  <span class="badge"><strong>Tryb:</strong> <span id="modeName">ABC</span></span>
+
+  <div class="row">
+    <label class="badge">
+      <strong>Czas (min):</strong>
+      <input id="minutesInput" type="number" min="1" max="90" value="20" style="width:70px; padding:6px; border-radius:10px; border:1px solid #cfd3e0;">
+    </label>
+
+    <button class="ghost" onclick="startTimer()">Start</button>
+    <button class="secondary" onclick="pauseTimer()">Pauza</button>
+    <button class="ghost" onclick="resetTimer()">Reset</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button id="tabBtnABC" class="tabBtn active" onclick="openTab('abc')">Test ABC</button>
+  <button id="tabBtnOPEN" class="tabBtn" onclick="openTab('open')">Test otwarty</button>
+</div>
+
+<!-- ===================== ABC ===================== -->
+<div id="panel-abc" class="panel active">
+  <div class="grid2">
+    <div>
+      <h2>✅ Test ABC</h2>
+      <p class="small">Losuje <b id="abcCountText">20</b> pytań z większej bazy. Kliknij odpowiedzi.</p>
+    </div>
+    <div>
+      <div class="progressWrap">
+        <div class="small">Postęp: <span id="abcProgressText">0%</span></div>
+        <div class="progressBar"><div id="abcProgressFill" class="progressFill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="warn" onclick="shuffleABC()">Losuj pytania + mieszaj odpowiedzi</button>
+    <button onclick="checkABC()">Sprawdź wynik</button>
+    <button class="ghost" onclick="showWrongOnly('abc')">Pokaż tylko błędne</button>
+    <button class="secondary" onclick="resetABC()">Reset</button>
+    <button class="ghost" onclick="showAll('abc')">Pokaż wszystkie</button>
+  </div>
+
+  <div id="abcQuestions"></div>
+  <div id="abcResult" class="resultBox" style="display:none;"></div>
+</div>
+
+<!-- ===================== OPEN ===================== -->
+<div id="panel-open" class="panel">
+  <div class="grid2">
+    <div>
+      <h2>✅ Test otwarty</h2>
+      <p class="small">
+        Losuje <b id="openCountText">10</b> pytań z większej bazy. Wpisuj odpowiedzi swoimi słowami.
+        System akceptuje wiele wersji + toleruje drobne literówki.
+      </p>
+      <p class="small">
+        Tip: Staraj się pisać najważniejsze słowa-klucze (np. „ucieczka”, „Medyna”, „622”).
+      </p>
+    </div>
+    <div>
+      <div class="progressWrap">
+        <div class="small">Postęp: <span id="openProgressText">0%</span></div>
+        <div class="progressBar"><div id="openProgressFill" class="progressFill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="warn" onclick="shuffleOPEN()">Losuj pytania</button>
+    <button onclick="checkOpen()">Sprawdź wynik</button>
+    <button class="ghost" onclick="showWrongOnly('open')">Pokaż tylko błędne</button>
+    <button class="secondary" onclick="resetOpen()">Reset</button>
+    <button class="ghost" onclick="showAll('open')">Pokaż wszystkie</button>
+  </div>
+
+  <div id="openQuestions"></div>
+  <div id="openResult" class="resultBox" style="display:none;"></div>
+</div>
+
+<script>
+  // ===================== ILE LOSOWAĆ DO TESTU =====================
+  const ABC_DRAW = 20;
+  const OPEN_DRAW = 10;
+
+  // Uaktualnij napisy w UI
+  document.getElementById("abcCountText").textContent = String(ABC_DRAW);
+  document.getElementById("openCountText").textContent = String(OPEN_DRAW);
+  document.getElementById("tabBtnABC").textContent = `Test ABC (${ABC_DRAW} pytań)`;
+  document.getElementById("tabBtnOPEN").textContent = `Test otwarty (${OPEN_DRAW} pytań)`;
+
+  // ===================== UTIL: localStorage best score =====================
+  const BEST_KEY = "dzial4_bestscore";
+  function loadBest() {
+    const v = localStorage.getItem(BEST_KEY);
+    document.getElementById("bestScore").textContent = v ? v : "brak";
+  }
+  function saveBest(text, percent) {
+    const old = localStorage.getItem(BEST_KEY);
+    if (!old) {
+      localStorage.setItem(BEST_KEY, text);
+      loadBest();
+      return;
+    }
+    const oldPercent = Number((old.match(/(\d+)%/)||[])[1] || 0);
+    if (percent > oldPercent) {
+      localStorage.setItem(BEST_KEY, text);
+      loadBest();
+    }
+  }
+  loadBest();
+
+  // ===================== TIMER =====================
+  let timerSeconds = 0;
+  let timerId = null;
+  let timerRunning = false;
+
+  function formatTime(s) {
+    const m = Math.floor(s/60);
+    const sec = s % 60;
+    return String(m).padStart(2,"0") + ":" + String(sec).padStart(2,"0");
+  }
+  function updateTimerUI() {
+    document.getElementById("timerText").textContent = formatTime(timerSeconds);
+  }
+  function startTimer() {
+    if (timerRunning) return;
+    const mins = Number(document.getElementById("minutesInput").value || 20);
+    if (timerSeconds === 0) timerSeconds = mins * 60;
+    timerRunning = true;
+    timerId = setInterval(() => {
+      timerSeconds--;
+      updateTimerUI();
+      if (timerSeconds <= 0) {
+        clearInterval(timerId);
+        timerRunning = false;
+        timerSeconds = 0;
+        updateTimerUI();
+        alert("⏰ Czas minął! Możesz sprawdzić wynik.");
+      }
+    }, 1000);
+  }
+  function pauseTimer() {
+    if (!timerRunning) return;
+    clearInterval(timerId);
+    timerRunning = false;
+  }
+  function resetTimer() {
+    pauseTimer();
+    const mins = Number(document.getElementById("minutesInput").value || 20);
+    timerSeconds = mins * 60;
+    updateTimerUI();
+  }
+  resetTimer();
+
+  // ===================== TAB =====================
+  function openTab(tabName) {
+    document.querySelectorAll(".tabBtn").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+
+    if(tabName === "abc") {
+      document.getElementById("tabBtnABC").classList.add("active");
+      document.getElementById("panel-abc").classList.add("active");
+      document.getElementById("modeName").textContent = "ABC";
+    } else {
+      document.getElementById("tabBtnOPEN").classList.add("active");
+      document.getElementById("panel-open").classList.add("active");
+      document.getElementById("modeName").textContent = "Otwarty";
+    }
+  }
+
+  // ===================== HELPERS =====================
+  function deepCopy(o){ return JSON.parse(JSON.stringify(o)); }
+
+  function shuffleArray(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+  }
+
+  // losowe N bez powtórek
+  function pickRandomN(arr, n){
+    const tmp = deepCopy(arr);
+    shuffleArray(tmp);
+    return tmp.slice(0, Math.min(n, tmp.length));
+  }
+
+  // ===================== DATA: ABC (BAZA > 20) =====================
+  // TYLKO to, co już masz: te same fakty, tylko inne sformułowanie / pytanie na to samo.
+  const abcBase = [
+  // oryginalne 20 (bez numerów)
+  { q:"W którym roku powstało Bizancjum?", a:["476 r.","395 r.","800 r.","1453 r."], c:1 },
+  { q:"Stolicą Bizancjum był:", a:["Rzym","Ateny","Konstantynopol","Medyna"], c:2 },
+  { q:"Konstantynopol leżał nad cieśniną:", a:["Gibraltar","Bosfor","Suez","Dardanele"], c:1 },
+  { q:"Największa świetność Bizancjum przypada na wiek:", a:["V","VI","IX","XII"], c:1 },
+  { q:"Cesarz, za którego czasów zbudowano Hagia Sophia:", a:["Justynian I","Karol Wielki","Otton I","Henryk IV"], c:0 },
+  { q:"Kodeks Justyniana to:", a:["kronika bitew","spisane prawo rzymskie","modlitwy islamu","traktat pokojowy"], c:1 },
+  { q:"W którym roku Turcy zdobyli Konstantynopol?", a:["1054","1122","1453","622"], c:2 },
+  { q:"Zdobycie Konstantynopola w 1453 r. jest uznawane za symboliczny:", a:["początek starożytności","początek renesansu","koniec średniowiecza","koniec nowożytności"], c:2 },
+  { q:"Twórcą islamu był:", a:["Chlodwig","Mahomet","Leon III","Karol Młot"], c:1 },
+  { q:"Jak muzułmanie nazywają Boga?", a:["Jahwe","Allah","Zeus","Chrystus"], c:1 },
+  { q:"Święta księga islamu to:", a:["Biblia","Tora","Koran","Ewangelia"], c:2 },
+  { q:"Hidżra to:", a:["budowa Hagii Sophii","ucieczka Mahometa do Medyny","koronacja Karola Wielkiego","traktat w Verdun"], c:1 },
+  { q:"Rok hidżry (początek ery muzułmańskiej) to:", a:["610","622","732","843"], c:1 },
+  { q:"Kalifowie to:", a:["władcy po Mahomecie","rycerze krzyżowi","patriarchowie","mnisi"], c:0 },
+  { q:"Dżihad oznacza:", a:["zakaz handlu","walkę w obronie wiary","pokój między religiami","wybór biskupów"], c:1 },
+  { q:"Bitwa pod Poitiers odbyła się w roku:", a:["732","800","843","962"], c:0 },
+  { q:"Kto dowodził Frankami pod Poitiers?", a:["Karol Młot","Pepin Mały","Karol Wielki","Justynian"], c:0 },
+  { q:"Karol Wielki został koronowany na cesarza w:", a:["395","800","962","1054"], c:1 },
+  { q:"Traktat w Verdun podpisano w:", a:["732","843","962","1122"], c:1 },
+  { q:"Wielka schizma wschodnia miała miejsce w:", a:["1054","1077","1122","1453"], c:0 },
+
+  // dodatkowe (te same fakty, inne pytania) (bez numerów)
+  { q:"Bizancjum powstało po podziale Cesarstwa Rzymskiego w roku:", a:["395 r.","476 r.","800 r.","1054 r."], c:0 },
+  { q:"Inna nazwa Bizancjum to:", a:["Cesarstwo Bizantyjskie","Cesarstwo Franków","Państwo Papieskie","Królestwo Polskie"], c:0 },
+  { q:"W jakim wieku panowała największa świetność Bizancjum?", a:["VI","V","XII","IX"], c:0 },
+  { q:"Hagia Sophia została zbudowana za panowania:", a:["Justyniana I","Henryka IV","Ottona I","Karola Wielkiego"], c:0 },
+  { q:"Kodeks Justyniana był związany z:", a:["prawem rzymskim","modlitwami islamu","traktatem w Verdun","bitwą pod Poitiers"], c:0 },
+  { q:"Konstantynopol to była stolica:", a:["Bizancjum","Rzymu","Aten","Medyny"], c:0 },
+  { q:"Cieśnina, nad którą leżał Konstantynopol, to:", a:["Bosfor","Suez","Gibraltar","Dardanele"], c:0 },
+  { q:"Rok 1453 wiąże się z wydarzeniem:", a:["zdobyciem Konstantynopola","traktatem w Verdun","koronacją Karola Wielkiego","hidżrą"], c:0 },
+  { q:"Zdobycie Konstantynopola (1453) uznaje się za symboliczny:", a:["koniec średniowiecza","początek starożytności","koniec nowożytności","początek starożytności"], c:0 },
+  { q:"Islam powstał dzięki działalności:", a:["Mahometa","Karola Młota","Leona III","Chlodwiga"], c:0 },
+  { q:"Jak brzmi nazwa Boga w islamie?", a:["Allah","Jahwe","Zeus","Chrystus"], c:0 },
+  { q:"Święta księga islamu to:", a:["Koran","Tora","Biblia","Ewangelia"], c:0 },
+  { q:"Hidżra oznacza:", a:["ucieczkę Mahometa do Medyny","traktat w Verdun","budowę Hagii Sophii","wielką schizmę wschodnią"], c:0 },
+  { q:"Początek ery muzułmańskiej to rok:", a:["622","610","732","843"], c:0 },
+  { q:"Kalif to:", a:["władca po Mahomecie","mnich","patriarcha","rycerz krzyżowy"], c:0 },
+  { q:"Dżihad to:", a:["walka w obronie wiary","zakaz handlu","pokój między religiami","wybór biskupów"], c:0 },
+  { q:"Rok 732 dotyczy:", a:["bitwy pod Poitiers","koronacji Karola Wielkiego","traktatu w Verdun","wielkiej schizmy wschodniej"], c:0 },
+  { q:"Dowódcą Franków pod Poitiers był:", a:["Karol Młot","Pepin Mały","Karol Wielki","Justynian I"], c:0 },
+  { q:"Karol Wielki został cesarzem w roku:", a:["800","843","962","395"], c:0 },
+  { q:"Traktat w Verdun zawarto w roku:", a:["843","732","1122","1054"], c:0 },
+  { q:"Wielka schizma wschodnia miała miejsce w roku:", a:["1054","1077","1122","1453"], c:0 },
+
+  // kilka „odwróconych” (nadal te same dane) (bez numerów)
+  { q:"Który rok to hidżra (początek ery muzułmańskiej)?", a:["622","732","843","800"], c:0 },
+  { q:"Który rok to traktat w Verdun?", a:["843","1122","1054","1453"], c:0 },
+  { q:"Który rok to bitwa pod Poitiers?", a:["732","800","962","395"], c:0 },
+  { q:"Który rok to zdobycie Konstantynopola przez Turków?", a:["1453","1054","1122","622"], c:0 },
+
+  // === DODATKOWE PYTANIA ABC (z notatek/fiszek) (bez "(DOD)") ===
+  { q:"Bizancjum to inaczej:", a:["Cesarstwo Wschodniorzymskie","Cesarstwo Zachodniorzymskie","Państwo Franków","Kalifat"], c:0 },
+  { q:"Stolica Bizancjum była nazywana też:", a:["Nowy Rzym","Stary Rzym","Nowa Mekka","Nowa Galia"], c:0 },
+  { q:"Konstantynopol leżał na granicy:", a:["Europy i Azji","Afryki i Azji","Europy i Afryki","Ameryki i Europy"], c:0 },
+  { q:"Dlaczego Konstantynopol był silnie broniony? (wybierz najlepszą)", a:["mury + wody + łańcuchy przeciw okrętom","pustynia dookoła","brak dostępu do morza","tylko drewniane płoty"], c:0 },
+  { q:"Cesarz w Bizancjum był także:", a:["głową państwa i wojska","tylko dowódcą wojska","tylko kapłanem","tylko sędzią"], c:0 },
+  { q:"Justynian I Wielki panował w wieku:", a:["VI","V","IX","XII"], c:0 },
+  { q:"Justynian I kazał spisać:", a:["prawo rzymskie","modlitwy islamu","kronikę bitew Franków","legendy o Canossie"], c:0 },
+  { q:"Hagia Sophia była:", a:["wielką bazyliką w Konstantynopolu","twierdzą w Galii","meczetem w Medynie","pałacem w Rzymie"], c:0 },
+  { q:"Co było charakterystyczne dla Hagii Sophii?", a:["wielka kopuła i okna dające efekt „unoszenia”","piramidy i sfinks","wieża minaret","drewniany dach bez okien"], c:0 },
+  { q:"Wnętrze Hagii Sophii zdobiono m.in.:", a:["mozaikami, marmurami i złotymi ozdobami","głównie drewnem i gliną","wyłącznie freskami bez mozaik","samymi kamieniami bez ozdób"], c:0 },
+  { q:"Styl bizantyjski kojarzył się z:", a:["przepychem, kopułami i mozaikami","prostotą i brakiem ozdób","drewnianymi chatach","samymi piramidami"], c:0 },
+  { q:"Jedno z osiągnięć Bizancjum to:", a:["ratowanie rękopisów ze starożytności","wynalezienie prochu","odkrycie Ameryki","wprowadzenie alfabetu łacińskiego"], c:0 },
+  { q:"Bizancjum przez wieki atakowali m.in.:", a:["Słowianie, Arabowie, Turcy","Grecy, Rzymianie, Wikingowie","Majowie, Aztekowie, Inkowie","Japończycy, Chińczycy, Hindusi"], c:0 },
+  { q:"Skutkiem zdobycia Konstantynopola w 1453 r. była:", a:["śmierć ostatniego cesarza","powstanie Bizancjum","koronacja Karola Wielkiego","podpisanie konkordatu"], c:0 },
+  { q:"Arabowie przed islamem mieszkali na:", a:["Półwyspie Arabskim","Półwyspie Iberyjskim","Półwyspie Apenińskim","Półwyspie Skandynawskim"], c:0 },
+  { q:"Arabowie przed islamem żyli głównie:", a:["koczowniczo","w wielkich miastach przemysłowych","tylko na wybrzeżu","w dżungli"], c:0 },
+  { q:"Ważna miejscowość Arabów przed islamem to:", a:["Mekka","Ateny","Konstantynopol","Gniezno"], c:0 },
+  { q:"Kaaba znajduje się w:", a:["Mekce","Medynie","Konstantynopolu","Rzymie"], c:0 },
+  { q:"Czarny Kamień jest związany z:", a:["Kaabą i Mekką","Kodeksem Justyniana","traktatem w Verdun","Canossą"], c:0 },
+  { q:"Islam to religia:", a:["monoteistyczna","politeistyczna","bez bogów","oparta na wielu bogach"], c:0 },
+  { q:"Jak nazywa się Bóg w islamie?", a:["Allah","Jahwe","Zeus","Chrystus"], c:0 },
+  { q:"Koran to:", a:["święta księga islamu","święta księga chrześcijan","kodeks prawa rzymskiego","traktat pokojowy"], c:0 },
+  { q:"Modlitwa jest filarem islamu i odbywa się:", a:["5 razy dziennie w stronę Mekki","1 raz w tygodniu w stronę Rzymu","2 razy dziennie w stronę Konstantynopola","10 razy dziennie w stronę Medyny"], c:0 },
+  { q:"Minaret to:", a:["wieża, z której wzywa się do modlitwy","wnęka pokazująca kierunek Mekki","kazalnica","kopuła bazyliki"], c:0 },
+  { q:"Mihrab to:", a:["wnęka pokazująca kierunek Mekki","wieża przy meczecie","kazalnica","mury obronne"], c:0 },
+  { q:"Minbar to:", a:["kazalnica","wieża przy meczecie","wnęka wskazująca kierunek Mekki","łańcuchy przeciw okrętom"], c:0 },
+  { q:"Po śmierci Mahometa rządzili:", a:["kalifowie","patriarchowie","majordomowie","Merowingowie"], c:0 },
+  { q:"Dżihad oznacza:", a:["walkę w obronie wiary","zakaz handlu","pokój między religiami","wybór biskupów"], c:0 },
+  { q:"W VII–VIII w. Arabowie podbili ziemie:", a:["od Indii po Hiszpanię (przez Bliski Wschód i Afrykę Płn.)","tylko Skandynawię","tylko Polskę i Węgry","tylko Amerykę Północną"], c:0 },
+  { q:"Jednym z osiągnięć Arabów był rozwój:", a:["matematyki i nauk (np. cyfry arabskie)","budowy piramid","feudalizmu w Europie","traktatów w Verdun"], c:0 },
+  { q:"Frankowie osiedlili się w:", a:["Galii","Italii","Hispanii","Arabii"], c:0 },
+  { q:"Chlodwig przyjął chrześcijaństwo w roku:", a:["496","395","732","843"], c:0 },
+  { q:"Dynastia rządząca u Franków za czasów Chlodwiga to:", a:["Merowingowie","Karolingowie","Piastowie","Jagiellonowie"], c:0 },
+  { q:"Majordomowie to:", a:["osoby mające realną władzę u Franków","mnisi w Bizancjum","kalifowie po Mahomecie","patriarchowie Konstantynopola"], c:0 },
+  { q:"Pepin Mały przejął władzę w roku:", a:["751","732","800","962"], c:0 },
+  { q:"Dynastia Pepina i Karola Wielkiego to:", a:["Karolingowie","Merowingowie","Habsburgowie","Romanowowie"], c:0 },
+  { q:"Bitwa pod Poitiers (732 r.) zakończyła się:", a:["zatrzymaniem najazdu Arabów na Europę Zachodnią","zdobyciem Konstantynopola","podziałem państwa Franków","wielką schizmą wschodnią"], c:0 },
+  { q:"Karol Wielki został koronowany na cesarza w:", a:["800","843","962","1054"], c:0 },
+  { q:"Traktat w Verdun (843 r.) oznaczał:", a:["podział państwa na 3 części","koniec Bizancjum","początek islamu","zakończenie sporu o inwestyturę"], c:0 },
+  { q:"Z podziału po Verdun w przyszłości powstały:", a:["Francja, Niemcy, Włochy","Polska, Czechy, Węgry","Hiszpania, Portugalia, Anglia","Szwecja, Norwegia, Dania"], c:0 },
+  { q:"Wielka schizma wschodnia miała miejsce w:", a:["1054","1077","1122","1453"], c:0 },
+  { q:"Skutkiem schizmy był podział chrześcijaństwa na:", a:["katolicyzm i prawosławie","islam i judaizm","protestantyzm i islam","pogaństwo i chrześcijaństwo"], c:0 },
+  { q:"Inwestytura to spór o:", a:["mianowanie biskupów","zdobycie Konstantynopola","podział państwa Franków","pięć filarów islamu"], c:0 },
+  { q:"Papież w sporze o inwestyturę to:", a:["Grzegorz VII","Henryk IV","Justynian I","Karol Wielki"], c:0 },
+  { q:"Cesarz w sporze o inwestyturę to:", a:["Henryk IV","Grzegorz VII","Mahomet","Chlodwig"], c:0 },
+  { q:"Canossa (1077 r.) to:", a:["spotkanie Henryka IV z papieżem i prośba o cofnięcie klątwy","podział państwa na 3 części","zdobycie Konstantynopola","hidżra"], c:0 },
+  { q:"Konkordat w Wormacji podpisano w:", a:["1122","1054","843","622"], c:0 },
+  { q:"Kompromis w Wormacji oznaczał, że biskupów wybiera:", a:["Kościół","cesarz","kalif","majordom"], c:0 },
+  { q:"Wśród najważniejszych dat jest koronacja Ottona I w roku:", a:["962","800","751","496"], c:0 },
+];
+
+  // ===================== ABC: build/render/check/reset =====================
+  let abcData = [];
+function cleanQuestionText(q){
+  return (q ?? "")
+    .replace(/\uFEFF/g, "")                         // usuń BOM
+    .replace(/^\s*(?:\/\/.*\n)*/g, "")              // usuń linie komentarzy na początku
+    .replace(/^\s*\(DOD\)\s*/i, "")                 // (DOD)
+    .replace(/^\s*\d+\s*[\.\)\-:]\s*/m, "")         // 1. 1) 1- 1:
+    .replace(/^\s*\d+\s+/m, "")                     // 1 tekst
+    .trim();
+}
+
+  function buildABC(drawCount=ABC_DRAW, shuffleAnswers=true){
+  abcData = pickRandomN(abcBase, drawCount);
+
+  // ✅ czyść pytania z numerków / (DOD)
+  abcData.forEach(item => {
+    item.q = cleanQuestionText(item.q);
+  });
+
+  if(shuffleAnswers){
+    abcData.forEach(item=>{
+      const correctText = item.a[item.c];
+      shuffleArray(item.a);
+      item.c = item.a.indexOf(correctText);
+    });
+  }
+}
+
+
+  function renderABC() {
+  const container = document.getElementById("abcQuestions");
+  container.innerHTML = "";
+
+  abcData.forEach((item, idx) => {
+    const div = document.createElement("div");
+    div.className = "question";
+    div.id = `abcQ_${idx}`;
+
+    div.innerHTML = `
+      <div class="qTitle">${cleanQuestionText(item.q)}</div>
+      <div class="answers">
+        ${item.a.map((ans, i) => `
+          <label>
+            <input type="radio" name="abc_${idx}" value="${i}">
+            <b>${String.fromCharCode(65+i)}.</b> ${ans}
+          </label>
+        `).join("")}
+      </div>
+      <div class="keyAnswer" id="abcKey_${idx}" style="display:none;"></div>
+    `;
+
+    container.appendChild(div);
+  });
+
+  attachProgressListenersABC();
+  updateProgress("abc");
+}
+
+
+  function checkABC() {
+    let score = 0;
+    let details = [];
+
+    abcData.forEach((item, idx) => {
+      const chosen = document.querySelector(`input[name="abc_${idx}"]:checked`);
+      const chosenIndex = chosen ? Number(chosen.value) : null;
+
+      const qDiv = document.getElementById(`abcQ_${idx}`);
+      const key = document.getElementById(`abcKey_${idx}`);
+      key.style.display = "block";
+      key.innerHTML = `Poprawna: <span class="pill"><b>${String.fromCharCode(65+item.c)}.</b> ${item.a[item.c]}</span>`;
+
+      if (chosenIndex === item.c) {
+        score++;
+        qDiv.classList.remove("wrong");
+        qDiv.classList.add("correct");
+        details.push(`<div class="good">✔ ${cleanQuestionText(item.q)}</div>`);
+      } else {
+        qDiv.classList.remove("correct");
+        qDiv.classList.add("wrong");
+        details.push(`<div class="bad">✘ ${cleanQuestionText(item.q)}</div>`);
+      }
+    });
+
+    const percent = Math.round((score / abcData.length) * 100);
+    const grade = gradeFromPercent(percent);
+
+    const result = document.getElementById("abcResult");
+    result.style.display = "block";
+    result.innerHTML = `
+      <h3>Wynik: ${score} / ${abcData.length} (${percent}%) — Ocena: <span class="${percent>=50?'good':'bad'}">${grade}</span></h3>
+      <div class="small">Powtórka: kliknij „Pokaż tylko błędne”, żeby ćwiczyć same trudne pytania.</div>
+      <hr style="border:none;border-top:1px solid #e3e6f2;margin:10px 0;">
+      ${details.join("")}
+    `;
+
+    saveBest(`ABC: ${score}/${abcData.length} (${percent}%)`, percent);
+  }
+
+  function resetABC() {
+    document.querySelectorAll(`#abcQuestions input[type="radio"]`).forEach(r => r.checked = false);
+    document.querySelectorAll(`#abcQuestions .question`).forEach((q)=>{
+      q.classList.remove("correct","wrong");
+      const id = q.id.replace("abcQ_","");
+      const key = document.getElementById(`abcKey_${id}`);
+      if(key) key.style.display = "none";
+    });
+    document.getElementById("abcResult").style.display = "none";
+    updateProgress("abc");
+    showAll("abc");
+  }
+
+  function shuffleABC(){
+    // nowy los + mieszanie odpowiedzi
+    buildABC(ABC_DRAW, true);
+    renderABC();
+    resetABC();
+  }
+
+  // ===================== DATA: OPEN (BAZA > 10) =====================
+  // TYLKO to, co już masz: te same odpowiedzi/pojęcia, inne sformułowania.
+  const openBase = [
+    {
+  q:"Co to było Bizancjum?",
+  accepted:["Cesarstwo Wschodniorzymskie","Cesarstwo Bizantyjskie"],
+  must:["cesarstw"],
+  any:["wschodniorzymsk","bizantyj"],
+  explain:"Np. Cesarstwo Wschodniorzymskie (Bizancjum)."
+},
+{
+  q:"Podaj stolicę Bizancjum.",
+  accepted:["Konstantynopol"],
+  must:["konstantynopol"],
+  explain:"Konstantynopol."
+},
+{
+  q:"Wymień 5 filarów islamu.",
+  accepted:[
+    "wyznanie wiary, modlitwa, jałmużna, post, pielgrzymka",
+    "wiara, modlitwa, jałmużna, post, pielgrzymka do Mekki"
+  ],
+  requiredStemsAnyOf:["wiar","modlitw","jalmu","post","pielgrzym"],
+  minMatch:4,
+  explain:"Wyznanie wiary, modlitwa, jałmużna, post, pielgrzymka do Mekki."
+},
+{
+  q:"Co to była hidżra i w którym roku?",
+  accepted:[
+    "Ucieczka Mahometa z Mekki do Medyny w 622 roku",
+    "Ucieczka Mahometa do Medyny w 622"
+  ],
+  must:["ucieczk","medyn","622"],
+  explain:"Ucieczka Mahometa z Mekki do Medyny w 622 r."
+},
+{
+  q:"Podaj rok koronacji Karola Wielkiego na cesarza.",
+  accepted:["800","800 r.","w 800 roku"],
+  must:["800"],
+  explain:"800 r."
+},
+{
+  q:"Co ustalił traktat w Verdun (843 r.)?",
+  accepted:[
+    "Podział państwa Karola Wielkiego na trzy części",
+    "Podział państwa Franków na trzy części"
+  ],
+  must:["podzial","trz"],
+  any:["verdun","panstw","frank","karol"],
+  explain:"Podział państwa Karola Wielkiego na 3 części."
+},
+{
+  q:"Co wydarzyło się w 1054 roku?",
+  accepted:[
+    "Wielka schizma wschodnia",
+    "Podział Kościoła na katolicki i prawosławny"
+  ],
+  any:["schizm","podzial kosciola","katolic","prawoslaw"],
+  explain:"Wielka schizma wschodnia – podział na katolicyzm i prawosławie."
+},
+{
+  q:"Na czym polegał spór o inwestyturę?",
+  accepted:[
+    "Spór o to, kto ma mianować biskupów",
+    "Spór o prawo mianowania biskupów"
+  ],
+  must:["biskup"],
+  any:["mianow","wybier","inwestyt"],
+  explain:"Spór o mianowanie (wybór) biskupów."
+},
+{
+  q:"Co wydarzyło się w Canossie (1077 r.)?",
+  accepted:[
+    "Spotkanie papieża Grzegorza VII z cesarzem Henrykiem IV",
+    "Henryk IV prosił papieża o zdjęcie klątwy"
+  ],
+  must:["1077"],
+  any:["canoss","henryk","grzegorz","klatw","papiez"],
+  explain:"W 1077 r. Henryk IV spotkał się z papieżem Grzegorzem VII w Canossie (prosił o cofnięcie klątwy)."
+},
+{
+  q:"Jak nazywa się porozumienie z 1122 r., które zakończyło spór o inwestyturę?",
+  accepted:[
+    "Konkordat w Wormacji",
+    "Konkordat wormacki"
+  ],
+  must:["1122"],
+  any:["wormac","konkordat"],
+  explain:"Konkordat w Wormacji (1122 r.)."
+},
+
+// dodatkowe – te same informacje, inne pytanie
+{
+  q:"Jak inaczej nazywamy Bizancjum?",
+  accepted:["Cesarstwo Bizantyjskie","Cesarstwo Wschodniorzymskie"],
+  must:["cesarstw"],
+  any:["bizantyj","wschodniorzymsk"],
+  explain:"Cesarstwo Bizantyjskie / Wschodniorzymskie."
+},
+{
+  q:"Podaj rok hidżry (początek ery muzułmańskiej).",
+  accepted:["622","622 r.","w 622 roku"],
+  must:["622"],
+  explain:"622 r."
+},
+{
+  q:"Podaj rok traktatu w Verdun.",
+  accepted:["843","843 r.","w 843 roku"],
+  must:["843"],
+  explain:"843 r."
+},
+{
+  q:"Podaj rok bitwy pod Poitiers.",
+  accepted:["732","732 r.","w 732 roku"],
+  must:["732"],
+  explain:"732 r."
+},
+{
+  q:"Podaj kto dowodził Frankami pod Poitiers.",
+  accepted:["Karol Młot","Karol Mlot"],
+  must:["karol"],
+  any:["mlot"],
+  explain:"Karol Młot."
+},
+
+// === DODATKOWE PYTANIA OTWARTE (z notatek/fiszek) ===
+{
+  q:"Dlaczego Konstantynopol był ważny? Podaj 2 powody.",
+  accepted:["położenie Europa–Azja i handel","położenie (Europa i Azja) oraz centrum handlu","silne mury i handel","centrum handlu i silne umocnienia"],
+  any:["europ","azj","handl","mury","bosfor","bron"],
+  explain:"Np. położenie na granicy Europy i Azji + centrum handlu (albo silne umocnienia)."
+},
+{
+  q:"Co kazał spisać Justynian I? (jak nazywa się ten zbiór?)",
+  accepted:["prawo rzymskie (Kodeks Justyniana)","Kodeks Justyniana","spisane prawo rzymskie"],
+  must:["kodeks"],
+  any:["justyn","prawo rzymsk"],
+  explain:"Spisane prawo rzymskie – Kodeks Justyniana."
+},
+{
+  q:"W jakim wieku przypada największa świetność Bizancjum?",
+  accepted:["VI","VI w.","w VI wieku"],
+  must:["vi"],
+  explain:"VI wiek."
+},
+{
+  q:"Co to jest Hagia Sophia?",
+  accepted:["wielka bazylika w Konstantynopolu","bazylika w Konstantynopolu"],
+  must:["konstantynopol"],
+  any:["bazylik","hagia"],
+  explain:"Wielka bazylika w Konstantynopolu."
+},
+{
+  q:"Podaj 2 przykłady ozdób/elementów wnętrza kościołów bizantyjskich.",
+  accepted:["mozaiki i freski","mozaiki, marmury, złote ozdoby","mozaiki i marmury"],
+  any:["mozaik","fresk","marmur","zlot"],
+  explain:"Np. mozaiki i freski (albo marmury, złote ozdoby)."
+},
+{
+  q:"Gdzie znajduje się Kaaba?",
+  accepted:["w Mekce","Mekka"],
+  must:["mek"],
+  any:["kaab"],
+  explain:"Kaaba znajduje się w Mekce."
+},
+{
+  q:"Jak nazywa się świątynia związana z Czarnym Kamieniem?",
+  accepted:["Kaaba","Kaaba w Mekce"],
+  must:["kaab"],
+  explain:"Kaaba (w Mekce)."
+},
+{
+  q:"Ile razy dziennie modlą się muzułmanie i w którą stronę?",
+  accepted:["5 razy dziennie w stronę Mekki","pięć razy dziennie w stronę Mekki"],
+  must:["5"],
+  any:["mekk","stron"],
+  explain:"5 razy dziennie w stronę Mekki."
+},
+{
+  q:"Co to jest minaret?",
+  accepted:["wieża przy meczecie (wezwanie do modlitwy)","wieża, z której wzywa się do modlitwy"],
+  must:["wiez"],
+  any:["minaret","modlitw"],
+  explain:"Minaret – wieża, z której wzywa się do modlitwy."
+},
+{
+  q:"Co to jest mihrab?",
+  accepted:["wnęka pokazująca kierunek Mekki","wnęka wskazująca kierunek Mekki"],
+  must:["wnek"],
+  any:["mekk","mihrab","kierunek"],
+  explain:"Mihrab – wnęka pokazująca kierunek Mekki."
+},
+{
+  q:"Co to jest minbar?",
+  accepted:["kazalnica","kazalnica w meczecie"],
+  must:["kazal"],
+  any:["minbar","meczet"],
+  explain:"Minbar – kazalnica (w meczecie)."
+},
+{
+  q:"Kim byli majordomowie u Franków?",
+  accepted:["mieli realną władzę","to oni mieli realną władzę","realnie rządzili państwem"],
+  any:["realn","wladz","majordom"],
+  explain:"Majordomowie mieli realną władzę (faktycznie rządzili)."
+},
+{
+  q:"Podaj rok koronacji Ottona I.",
+  accepted:["962","962 r.","w 962 roku"],
+  must:["962"],
+  explain:"962 r."
+},
+  ];
+
+  // ===================== NORMALIZACJA (PL) + FUZZY =====================
+  function normalizeText(t) {
+    return (t || "")
+      .toLowerCase()
+      .replaceAll("ą","a").replaceAll("ć","c").replaceAll("ę","e")
+      .replaceAll("ł","l").replaceAll("ń","n").replaceAll("ó","o")
+      .replaceAll("ś","s").replaceAll("ż","z").replaceAll("ź","z")
+      .replace(/[^a-z0-9\s]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function levenshtein(a, b) {
+    a = normalizeText(a); b = normalizeText(b);
+    const m = a.length, n = b.length;
+    if (m === 0) return n;
+    if (n === 0) return m;
+    const dp = Array.from({length: m+1}, () => Array(n+1).fill(0));
+    for (let i=0;i<=m;i++) dp[i][0]=i;
+    for (let j=0;j<=n;j++) dp[0][j]=j;
+    for (let i=1;i<=m;i++){
+      for (let j=1;j<=n;j++){
+        const cost = a[i-1]===b[j-1] ? 0 : 1;
+        dp[i][j] = Math.min(
+          dp[i-1][j]+1,
+          dp[i][j-1]+1,
+          dp[i-1][j-1]+cost
+        );
+      }
+    }
+    return dp[m][n];
+  }
+
+  function similarity(a,b){
+    a=normalizeText(a); b=normalizeText(b);
+    const maxLen = Math.max(a.length,b.length);
+    if (maxLen===0) return 1;
+    const dist = levenshtein(a,b);
+    return 1 - (dist/maxLen);
+  }
+
+  function containsAny(text, stems){
+    const u = normalizeText(text);
+    return stems.some(s=>u.includes(normalizeText(s)));
+  }
+  function containsAll(text, stems){
+    const u = normalizeText(text);
+    return stems.every(s=>u.includes(normalizeText(s)));
+  }
+
+  function isOpenCorrect(userAnswer, item){
+    const u = normalizeText(userAnswer);
+    if(!u) return false;
+
+    if(item.requiredStemsAnyOf){
+      const hits = item.requiredStemsAnyOf.filter(st => u.includes(normalizeText(st))).length;
+      if(hits >= (item.minMatch || item.requiredStemsAnyOf.length)) return true;
+    }
+
+    if(item.must && item.must.length){
+      const okMust = containsAll(u, item.must);
+      if(okMust){
+        if(item.any && item.any.length){
+          if(containsAny(u, item.any)) return true;
+          if(item.must.length >= 3) return true;
+          return false;
+        }
+        return true;
+      }
+    }
+
+    for(const acc of item.accepted){
+      const an = normalizeText(acc);
+      if(u === an) return true;
+      if(u.includes(an) || an.includes(u)) return true;
+    }
+
+    for(const acc of item.accepted){
+      const sim = similarity(u, acc);
+      const threshold = (normalizeText(acc).length <= 12) ? 0.84 : 0.78;
+      if(sim >= threshold) return true;
+    }
+
+    return false;
+  }
+
+  // ===================== OPEN: build/render/check/reset =====================
+  let openData = [];
+
+  function buildOPEN(drawCount=OPEN_DRAW){
+  openData = pickRandomN(openBase, drawCount);
+  openData.forEach(item => {
+    item.q = cleanQuestionText(item.q);
+  });
+}
+
+  function renderOPEN(){
+    const container = document.getElementById("openQuestions");
+    container.innerHTML = "";
+
+    openData.forEach((item, idx)=>{
+      const div = document.createElement("div");
+      div.className = "question";
+      div.id = `openQ_${idx}`;
+      div.innerHTML = `
+        <div class="qTitle">${cleanQuestionText(item.q)}</div>
+        <input type="text" id="open_${idx}" placeholder="Wpisz odpowiedź..." />
+        <div class="keyAnswer" id="openKey_${idx}" style="display:none;"></div>
+      `;
+      container.appendChild(div);
+    });
+
+    attachProgressListenersOPEN();
+    updateProgress("open");
+  }
+
+  function attachProgressListenersOPEN(){
+    openData.forEach((_,idx)=>{
+      const inp = document.getElementById(`open_${idx}`);
+      inp.addEventListener("input", ()=>updateProgress("open"));
+    });
+  }
+
+  function checkOpen(){
+    let score = 0;
+    let details = [];
+
+    openData.forEach((item, idx)=>{
+      const input = document.getElementById(`open_${idx}`);
+      const user = input.value;
+
+      const correct = isOpenCorrect(user, item);
+
+      const qDiv = document.getElementById(`openQ_${idx}`);
+      const key = document.getElementById(`openKey_${idx}`);
+      key.style.display = "block";
+
+      const pills = item.accepted.slice(0,3).map(x=>`<span class="pill">${x}</span>`).join("");
+      key.innerHTML = `
+        <div><b>Przykłady poprawnych:</b> ${pills}</div>
+        <div class="small"><b>Wzór:</b> ${item.explain}</div>
+      `;
+
+      if(correct){
+        score++;
+        qDiv.classList.remove("wrong");
+        qDiv.classList.add("correct");
+        details.push(`<div class="good">✔ ${cleanQuestionText(item.q)}</div>`);
+      } else {
+        qDiv.classList.remove("correct");
+        qDiv.classList.add("wrong");
+        details.push(`<div class="bad">✘ ${cleanQuestionText(item.q)}</div>`);
+      }
+    });
+
+    const percent = Math.round((score / openData.length) * 100);
+    const grade = gradeFromPercent(percent);
+
+    const result = document.getElementById("openResult");
+    result.style.display = "block";
+    result.innerHTML = `
+      <h3>Wynik: ${score} / ${openData.length} (${percent}%) — Ocena: <span class="${percent>=50?'good':'bad'}">${grade}</span></h3>
+      <div class="small">Powtórka: kliknij „Pokaż tylko błędne”.</div>
+      <hr style="border:none;border-top:1px solid #e3e6f2;margin:10px 0;">
+      ${details.join("")}
+      <div class="footerNote">
+        <b>Tip:</b> W otwartych liczą się słowa-klucze. System dopuszcza wiele wersji i literówki,
+        ale zawsze warto dopisać konkret (np. rok + miejsce).
+      </div>
+    `;
+
+    saveBest(`OTW: ${score}/${openData.length} (${percent}%)`, percent);
+  }
+
+  function resetOpen(){
+    openData.forEach((_, idx)=>{
+      document.getElementById(`open_${idx}`).value = "";
+      const qDiv = document.getElementById(`openQ_${idx}`);
+      qDiv.classList.remove("correct","wrong");
+      const key = document.getElementById(`openKey_${idx}`);
+      if(key) key.style.display = "none";
+    });
+    document.getElementById("openResult").style.display = "none";
+    updateProgress("open");
+    showAll("open");
+  }
+
+  function shuffleOPEN(){
+    buildOPEN(OPEN_DRAW);
+    renderOPEN();
+    resetOpen();
+  }
+
+  // ===================== PROGRESS =====================
+  function updateProgress(mode){
+    if(mode==="abc"){
+      const total = abcData.length;
+      let filled = 0;
+      for(let i=0;i<total;i++){
+        const chosen = document.querySelector(`input[name="abc_${i}"]:checked`);
+        if(chosen) filled++;
+      }
+      const pct = total ? Math.round((filled/total)*100) : 0;
+      document.getElementById("abcProgressText").textContent = pct + "%";
+      document.getElementById("abcProgressFill").style.width = pct + "%";
+    } else {
+      const total = openData.length;
+      let filled = 0;
+      for(let i=0;i<total;i++){
+        const v = document.getElementById(`open_${i}`).value.trim();
+        if(v) filled++;
+      }
+      const pct = total ? Math.round((filled/total)*100) : 0;
+      document.getElementById("openProgressText").textContent = pct + "%";
+      document.getElementById("openProgressFill").style.width = pct + "%";
+    }
+  }
+
+  // ===================== SHOW WRONG ONLY / SHOW ALL =====================
+  function showWrongOnly(mode){
+    if(mode==="abc"){
+      const qs = document.querySelectorAll("#abcQuestions .question");
+      qs.forEach(q=>{
+        if(!q.classList.contains("wrong")) q.style.display="none";
+        else q.style.display="block";
+      });
+    } else {
+      const qs = document.querySelectorAll("#openQuestions .question");
+      qs.forEach(q=>{
+        if(!q.classList.contains("wrong")) q.style.display="none";
+        else q.style.display="block";
+      });
+    }
+  }
+  function showAll(mode){
+    const selector = mode==="abc" ? "#abcQuestions .question" : "#openQuestions .question";
+    document.querySelectorAll(selector).forEach(q=>q.style.display="block");
+  }
+
+  // ===================== OCENA =====================
+  function gradeFromPercent(p){
+    if(p>=95) return "6 (celujący)";
+    if(p>=85) return "5 (bardzo dobry)";
+    if(p>=70) return "4 (dobry)";
+    if(p>=50) return "3 (dostateczny)";
+    if(p>=35) return "2 (dopuszczający)";
+    return "1 (niedostateczny)";
+  }
+
+  // ===================== INIT: od razu losujemy z bazy =====================
+  buildABC(ABC_DRAW, true);
+  renderABC();
+
+  buildOPEN(OPEN_DRAW);
+  renderOPEN();
+</script>
+
+</body>
+</html>
