@@ -38,7 +38,14 @@
     button.secondary { background: #666; }
     button.ghost { background: white; color:#222; border:1px solid #cfd3e0; }
     button.warn { background: #ffb020; color:#222; }
-    button:disabled { opacity: .55; cursor: not-allowed; }
+    button:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+  background: #f3f3f3;
+  color: #222;
+  border: 1px solid #cfd3e0;
+}
+
 
     .progressWrap { margin: 10px 0 2px; }
     .progressBar { height: 10px; width: 100%; background: #eef1f8; border-radius: 999px; overflow:hidden; border:1px solid #e3e8f3; }
