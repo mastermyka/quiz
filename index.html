@@ -437,6 +437,14 @@ function cleanQuestionText(q){
   attachProgressListenersABC();
   updateProgress("abc");
 }
+function attachProgressListenersABC(){
+  // dla każdego pytania ABC podepnij "change" do wszystkich radiobuttonów
+  abcData.forEach((_, idx) => {
+    document
+      .querySelectorAll(`input[name="abc_${idx}"]`)
+      .forEach(r => r.addEventListener("change", () => updateProgress("abc")));
+  });
+}
 
 
   function checkABC() {
