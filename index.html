@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Historia</title>
+  <title>Geografia</title>
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <style>
     :root { --ok:#1a8f2a; --bad:#c40000; --main:#2b7cff; --bg:#f6f7fb; }
@@ -76,8 +76,8 @@
 </head>
 <body>
 
-<h1>Sprawdzian – Dział 4 (Historia, klasa 5) 🔥</h1>
-<p class="small">Tryb „na wypasie”: timer, losowanie, podświetlanie, powtórka błędów, tolerancja w otwartych ✅</p>
+<h1>Sprawdzian – Krajobrazy wyżynne i górskie Polski 🔥</h1>
+<p class="small">Wyżyna Lubelska, Wyżyna Krakowsko-Częstochowska, Tatry, Wyżyna Śląska, ocena krajobrazu ✅</p>
 
 <div class="topBar">
   <span class="badge"><strong>Timer:</strong> <span id="timerText" class="mono">--:--</span></span>
@@ -271,108 +271,73 @@
 
   // ===================== DATA: ABC (BAZA > 20) =====================
   // TYLKO to, co już masz: te same fakty, tylko inne sformułowanie / pytanie na to samo.
-  const abcBase = [
-  // oryginalne 20 (bez numerów)
-  { q:"W którym roku powstało Bizancjum?", a:["476 r.","395 r.","800 r.","1453 r."], c:1 },
-  { q:"Stolicą Bizancjum był:", a:["Rzym","Ateny","Konstantynopol","Medyna"], c:2 },
-  { q:"Konstantynopol leżał nad cieśniną:", a:["Gibraltar","Bosfor","Suez","Dardanele"], c:1 },
-  { q:"Największa świetność Bizancjum przypada na wiek:", a:["V","VI","IX","XII"], c:1 },
-  { q:"Cesarz, za którego czasów zbudowano Hagia Sophia:", a:["Justynian I","Karol Wielki","Otton I","Henryk IV"], c:0 },
-  { q:"Kodeks Justyniana to:", a:["kronika bitew","spisane prawo rzymskie","modlitwy islamu","traktat pokojowy"], c:1 },
-  { q:"W którym roku Turcy zdobyli Konstantynopol?", a:["1054","1122","1453","622"], c:2 },
-  { q:"Zdobycie Konstantynopola w 1453 r. jest uznawane za symboliczny:", a:["początek starożytności","początek renesansu","koniec średniowiecza","koniec nowożytności"], c:2 },
-  { q:"Twórcą islamu był:", a:["Chlodwig","Mahomet","Leon III","Karol Młot"], c:1 },
-  { q:"Jak muzułmanie nazywają Boga?", a:["Jahwe","Allah","Zeus","Chrystus"], c:1 },
-  { q:"Święta księga islamu to:", a:["Biblia","Tora","Koran","Ewangelia"], c:2 },
-  { q:"Hidżra to:", a:["budowa Hagii Sophii","ucieczka Mahometa do Medyny","koronacja Karola Wielkiego","traktat w Verdun"], c:1 },
-  { q:"Rok hidżry (początek ery muzułmańskiej) to:", a:["610","622","732","843"], c:1 },
-  { q:"Kalifowie to:", a:["władcy po Mahomecie","rycerze krzyżowi","patriarchowie","mnisi"], c:0 },
-  { q:"Dżihad oznacza:", a:["zakaz handlu","walkę w obronie wiary","pokój między religiami","wybór biskupów"], c:1 },
-  { q:"Bitwa pod Poitiers odbyła się w roku:", a:["732","800","843","962"], c:0 },
-  { q:"Kto dowodził Frankami pod Poitiers?", a:["Karol Młot","Pepin Mały","Karol Wielki","Justynian"], c:0 },
-  { q:"Karol Wielki został koronowany na cesarza w:", a:["395","800","962","1054"], c:1 },
-  { q:"Traktat w Verdun podpisano w:", a:["732","843","962","1122"], c:1 },
-  { q:"Wielka schizma wschodnia miała miejsce w:", a:["1054","1077","1122","1453"], c:0 },
+ const abcBase = [
+  { q:"Obszary wyżynne w Polsce są położone na wysokości:", a:["100–300 m n.p.m.","300–500 m n.p.m.","500–900 m n.p.m.","powyżej 1000 m n.p.m."], c:1 },
+  { q:"Góry w Polsce to obszary położone:", a:["poniżej 300 m n.p.m.","między 300 a 500 m n.p.m.","powyżej 500 m n.p.m.","zawsze powyżej 2000 m n.p.m."], c:2 },
+  { q:"Wąwozy lessowe spotykamy na Wyżynie:", a:["Śląskiej","Lubelskiej","Krakowsko-Częstochowskiej","Małopolskiej"], c:1 },
+  { q:"Krajobraz Wyżyny Śląskiej przekształcił się w miejsko-przemysłowy dzięki odkryciu i wydobyciu:", a:["soli kamiennej","węgla kamiennego","węgla brunatnego","ropy naftowej"], c:1 },
+  { q:"Stalagmit to forma naciekowa jaskini, która:", a:["zwisa ze stropu jaskini","narasta od dna jaskini","łączy strop z dnem jaskini","powstaje na ścianie jaskini"], c:1 },
+  { q:"Stalaktyt to forma naciekowa jaskini, która:", a:["narasta od dna jaskini","zwisa ze stropu jaskini","powstaje na powierzchni ziemi","jest jeziorem krasowym"], c:1 },
+  { q:"Stalagnat powstaje przez:", a:["połączenie stalaktytu i stalagmitu","rozpuszczenie wapienia przez wodę","zapadnięcie się stropu jaskini","wypływ wody na powierzchnię"], c:0 },
+  { q:"Proces rozpuszczania skał wapiennych przez wodę to:", a:["wietrzenie","krasowienie","erozja lodowcowa","denudacja"], c:1 },
+  { q:"Skałą charakterystyczną dla Wyżyny Krakowsko-Częstochowskiej jest:", a:["granit","wapień","bazalt","piaskowiec"], c:1 },
+  { q:"Ostańce krasowe to:", a:["podziemne korytarze jaskiń","skały odporne na rozpuszczanie, wystające ponad teren","zagłębienia, w których znika woda","źródła krasowe"], c:1 },
+  { q:"Ponor to miejsce, w którym:", a:["woda wypływa spod ziemi","rzeka znika pod ziemią","powstaje hałda","zaczyna się wąwóz"], c:1 },
+  { q:"Wywierzysko to:", a:["miejsce wypływu wód podziemnych na powierzchnię","zagłębienie krasowe","ostry szczyt górski","sztuczne jezioro"], c:0 },
+  { q:"Formą krasu podziemnego jest:", a:["ostańce krasowe","żłobki krasowe","jaskinia","wywierzysko"], c:2 },
+  { q:"Na Wyżynie Lubelskiej żyzne czarnoziemy sprzyjają rozwojowi:", a:["górnictwa","rolnictwa","żeglugi","rybołówstwa"], c:1 },
+  { q:"Less to:", a:["skała magmowa","drobny pył osadowy o żółtym zabarwieniu","rodzaj węgla","skała wapienna"], c:1 },
+  { q:"Wąwóz to:", a:["ostry szczyt górski","szerokie obniżenie między szczytami","sucha dolina o stromych zboczach i wąskim dnie","miejsce wypływu rzeki"], c:2 },
+  { q:"Na Wyżynie Lubelskiej uprawia się m.in.:", a:["ryż i bawełnę","pszenicę, buraki cukrowe i chmiel","oliwki i pomarańcze","kawę i herbatę"], c:1 },
+  { q:"Rzepak uprawiany na Wyżynie Lubelskiej służy głównie do produkcji:", a:["papierosów","oleju i biopaliwa","włókna","mąki"], c:1 },
+  { q:"Len jest rośliną wykorzystywaną do produkcji:", a:["cukru","oleju i włókna","piwa","paszy"], c:1 },
+  { q:"Chmiel jest składnikiem używanym do produkcji:", a:["sera","oleju","piwa","cukru"], c:2 },
+  { q:"Wyżyna Krakowsko-Częstochowska jest znana z:", a:["wydobycia soli","zjawisk krasowych","wulkanów","szerokich delt rzecznych"], c:1 },
+  { q:"Szlak Orlich Gniazd to:", a:["szlak jaskiń w Tatrach","szlak zamków i warowni na Wyżynie Krakowsko-Częstochowskiej","szlak kopalń na Śląsku","szlak wąwozów lessowych"], c:1 },
+  { q:"Ojcowski Park Narodowy chroni głównie:", a:["krajobraz przemysłowy","krajobraz krasowy","krajobraz nadmorski","krajobraz pojezierny"], c:1 },
+  { q:"Maczuga Herkulesa to przykład:", a:["hałdy","ostańca krasowego","wąwozu lessowego","stożka piargowego"], c:1 },
+  { q:"Najwyższym pasmem górskim w Polsce są:", a:["Sudety","Bieszczady","Tatry","Góry Świętokrzyskie"], c:2 },
+  { q:"Najwyższym szczytem Polski są:", a:["Giewont","Śnieżka","Rysy","Kasprowy Wierch"], c:2 },
+  { q:"Rysy mają wysokość:", a:["1999 m n.p.m.","2499 m n.p.m.","2399 m n.p.m.","2599 m n.p.m."], c:1 },
+  { q:"Tatry dzielimy na:", a:["Tatry Niskie i Tatry Wysokie","Tatry Wschodnie i Tatry Zachodnie","Tatry Wysokie i Tatry Zachodnie","Tatry Granitowe i Wapienne"], c:2 },
+  { q:"Tatry Wysokie są zbudowane głównie z:", a:["wapieni","piaskowców","granitów","lessu"], c:2 },
+  { q:"Tatry Zachodnie są zbudowane głównie ze skał:", a:["wapiennych","granitowych","bazaltowych","gliniastych"], c:0 },
+  { q:"Turnia to:", a:["łagodny stok górski","ostry, skalisty szczyt","górska łąka","głęboka dolina"], c:1 },
+  { q:"Przełęcz to:", a:["szczyt górski","obniżenie między szczytami","jezioro polodowcowe","skała wapienna"], c:1 },
+  { q:"Kosodrzewina to:", a:["piętro lasów liściastych","krzewiasta sosna rosnąca wysoko w górach","rodzaj mchu","łąka górska"], c:1 },
+  { q:"Hale to:", a:["łąki wysokogórskie","lasy iglaste","turnie skalne","podziemne jaskinie"], c:0 },
+  { q:"Najwyższym piętrem roślinności w Tatrach są:", a:["hale","kosodrzewina","turnie","regiel górny"], c:2 },
+  { q:"Regiel dolny tworzą głównie:", a:["lasy liściaste i mieszane","lasy iglaste","trawy i mchy","same skały"], c:0 },
+  { q:"Regiel górny tworzą głównie:", a:["lasy liściaste","lasy iglaste","hale","turnie"], c:1 },
+  { q:"Piętrowość roślinności oznacza, że:", a:["rośliny rosną tylko w dolinach","roślinność zmienia się wraz z wysokością","w górach nie ma drzew","na każdej wysokości rosną te same gatunki"], c:1 },
+  { q:"Halny to:", a:["zimny wiatr znad morza","ciepły, suchy i porywisty wiatr w Tatrach","mgła w dolinach","letnia burza"], c:1 },
+  { q:"W górach wraz ze wzrostem wysokości:", a:["rośnie temperatura","spada temperatura i wzrasta suma opadów","maleje ilość opadów","nic się nie zmienia"], c:1 },
+  { q:"Kocioł lodowcowy to:", a:["wąwóz krasowy","zagłębienie wypełnione wodą jeziora górskiego","ostry szczyt","miejsce wypływu wody spod ziemi"], c:1 },
+  { q:"Stożek piargowy to:", a:["rumowisko skalne usypane u podnóża stoku","skała wapienna o ostrych krawędziach","rodzaj hali","jezioro polodowcowe"], c:0 },
+  { q:"Żleb to:", a:["szerokie obniżenie terenu","pionowe, szerokie wcięcie w stoku","podziemny korytarz","łagodna dolina rzeczna"], c:1 },
+  { q:"Do zwierząt żyjących w Tatrach należy:", a:["łoś i bóbr","kozica i świstak","wielbłąd i zebra","pingwin i foka"], c:1 },
+  { q:"Tatrzański Park Narodowy chroni:", a:["krajobraz rolniczy","przyrodę Tatr","zabytki przemysłowe Śląska","wąwozy lessowe"], c:1 },
+  { q:"Wyżyna Śląska charakteryzuje się:", a:["krajobrazem miejsko-przemysłowym","brakiem miast","przewagą lasów","tylko krajobrazem krasowym"], c:0 },
+  { q:"Skupisko wielu miast o podobnej wielkości i liczbie ludności to:", a:["aglomeracja","konurbacja","wieś łańcuchowa","osada"], c:1 },
+  { q:"Na Wyżynie Śląskiej powstał:", a:["Tatrzański Okręg Rolniczy","Górnośląski Okręg Przemysłowy","Lubelski Okręg Leśny","Karpacki Okręg Rybacki"], c:1 },
+  { q:"Hałda to:", a:["forma krasowa","wzniesienie usypane z odpadów górniczych i przemysłowych","górska hala","lessowy pagórek"], c:1 },
+  { q:"Szkody górnicze to:", a:["zabytki kopalni","uszkodzenia powierzchni terenu spowodowane wydobyciem","podziemne jaskinie","zanieczyszczenia powietrza"], c:1 },
+  { q:"Do negatywnych skutków rozwoju przemysłu należy:", a:["powstawanie parków narodowych","zanieczyszczenie powietrza i wód","wzrost liczby lasów","powstawanie wąwozów"], c:1 },
+  { q:"Przekształcanie dawnych kopalń i fabryk w muzea, centra handlowe lub kulturalne to:", a:["industrializacja","rewitalizacja","urbanizacja","elektryfikacja"], c:1 },
+  { q:"Gwary używają m.in.:", a:["górale podhalańscy","ludność nadmorska","mieszkańcy pustyń","Eskimosi"], c:0 },
+  { q:"Oscypek to:", a:["napój mleczny","ser owczy wyrabiany przez górali","rodzaj pieczywa","potrawa z ryżu"], c:1 },
+  { q:"Ocena krajobrazu polega m.in. na:", a:["obserwacji jakości środowiska i zagrożeń","liczeniu ludności","pomiarze rzek","obliczaniu wieku skał"], c:0 },
+  { q:"Podczas oceny krajobrazu zwraca się uwagę na:", a:["tylko budynki","tylko rośliny","przyrodę, architekturę i przestrzeń","wyłącznie drogi"], c:2 },
+  { q:"Plan zagospodarowania przestrzennego określa:", a:["historię regionu","co i gdzie można budować","wysokość gór","rodzaje skał"], c:1 },
+  { q:"Przykładem działania poprawiającego krajobraz najbliższej okolicy jest:", a:["tworzenie hałd","sadzenie roślin i organizowanie sprzątania","wycinanie wszystkich drzew","niszczenie placów zabaw"], c:1 },
+  { q:"Przez mieszkańców można poprawić wygląd okolicy np. przez:", a:["zaśmiecanie i wycinkę","sprzątanie i dbanie o estetykę","budowę kopalni","osuszanie jezior"], c:1 },
 
-  // dodatkowe (te same fakty, inne pytania) (bez numerów)
-  { q:"Bizancjum powstało po podziale Cesarstwa Rzymskiego w roku:", a:["395 r.","476 r.","800 r.","1054 r."], c:0 },
-  { q:"Inna nazwa Bizancjum to:", a:["Cesarstwo Bizantyjskie","Cesarstwo Franków","Państwo Papieskie","Królestwo Polskie"], c:0 },
-  { q:"W jakim wieku panowała największa świetność Bizancjum?", a:["VI","V","XII","IX"], c:0 },
-  { q:"Hagia Sophia została zbudowana za panowania:", a:["Justyniana I","Henryka IV","Ottona I","Karola Wielkiego"], c:0 },
-  { q:"Kodeks Justyniana był związany z:", a:["prawem rzymskim","modlitwami islamu","traktatem w Verdun","bitwą pod Poitiers"], c:0 },
-  { q:"Konstantynopol to była stolica:", a:["Bizancjum","Rzymu","Aten","Medyny"], c:0 },
-  { q:"Cieśnina, nad którą leżał Konstantynopol, to:", a:["Bosfor","Suez","Gibraltar","Dardanele"], c:0 },
-  { q:"Rok 1453 wiąże się z wydarzeniem:", a:["zdobyciem Konstantynopola","traktatem w Verdun","koronacją Karola Wielkiego","hidżrą"], c:0 },
-  { q:"Zdobycie Konstantynopola (1453) uznaje się za symboliczny:", a:["koniec średniowiecza","początek starożytności","koniec nowożytności","początek starożytności"], c:0 },
-  { q:"Islam powstał dzięki działalności:", a:["Mahometa","Karola Młota","Leona III","Chlodwiga"], c:0 },
-  { q:"Jak brzmi nazwa Boga w islamie?", a:["Allah","Jahwe","Zeus","Chrystus"], c:0 },
-  { q:"Święta księga islamu to:", a:["Koran","Tora","Biblia","Ewangelia"], c:0 },
-  { q:"Hidżra oznacza:", a:["ucieczkę Mahometa do Medyny","traktat w Verdun","budowę Hagii Sophii","wielką schizmę wschodnią"], c:0 },
-  { q:"Początek ery muzułmańskiej to rok:", a:["622","610","732","843"], c:0 },
-  { q:"Kalif to:", a:["władca po Mahomecie","mnich","patriarcha","rycerz krzyżowy"], c:0 },
-  { q:"Dżihad to:", a:["walka w obronie wiary","zakaz handlu","pokój między religiami","wybór biskupów"], c:0 },
-  { q:"Rok 732 dotyczy:", a:["bitwy pod Poitiers","koronacji Karola Wielkiego","traktatu w Verdun","wielkiej schizmy wschodniej"], c:0 },
-  { q:"Dowódcą Franków pod Poitiers był:", a:["Karol Młot","Pepin Mały","Karol Wielki","Justynian I"], c:0 },
-  { q:"Karol Wielki został cesarzem w roku:", a:["800","843","962","395"], c:0 },
-  { q:"Traktat w Verdun zawarto w roku:", a:["843","732","1122","1054"], c:0 },
-  { q:"Wielka schizma wschodnia miała miejsce w roku:", a:["1054","1077","1122","1453"], c:0 },
-
-  // kilka „odwróconych” (nadal te same dane) (bez numerów)
-  { q:"Który rok to hidżra (początek ery muzułmańskiej)?", a:["622","732","843","800"], c:0 },
-  { q:"Który rok to traktat w Verdun?", a:["843","1122","1054","1453"], c:0 },
-  { q:"Który rok to bitwa pod Poitiers?", a:["732","800","962","395"], c:0 },
-  { q:"Który rok to zdobycie Konstantynopola przez Turków?", a:["1453","1054","1122","622"], c:0 },
-
-  // === DODATKOWE PYTANIA ABC (z notatek/fiszek) (bez "(DOD)") ===
-  { q:"Bizancjum to inaczej:", a:["Cesarstwo Wschodniorzymskie","Cesarstwo Zachodniorzymskie","Państwo Franków","Kalifat"], c:0 },
-  { q:"Stolica Bizancjum była nazywana też:", a:["Nowy Rzym","Stary Rzym","Nowa Mekka","Nowa Galia"], c:0 },
-  { q:"Konstantynopol leżał na granicy:", a:["Europy i Azji","Afryki i Azji","Europy i Afryki","Ameryki i Europy"], c:0 },
-  { q:"Dlaczego Konstantynopol był silnie broniony? (wybierz najlepszą)", a:["mury + wody + łańcuchy przeciw okrętom","pustynia dookoła","brak dostępu do morza","tylko drewniane płoty"], c:0 },
-  { q:"Cesarz w Bizancjum był także:", a:["głową państwa i wojska","tylko dowódcą wojska","tylko kapłanem","tylko sędzią"], c:0 },
-  { q:"Justynian I Wielki panował w wieku:", a:["VI","V","IX","XII"], c:0 },
-  { q:"Justynian I kazał spisać:", a:["prawo rzymskie","modlitwy islamu","kronikę bitew Franków","legendy o Canossie"], c:0 },
-  { q:"Hagia Sophia była:", a:["wielką bazyliką w Konstantynopolu","twierdzą w Galii","meczetem w Medynie","pałacem w Rzymie"], c:0 },
-  { q:"Co było charakterystyczne dla Hagii Sophii?", a:["wielka kopuła i okna dające efekt „unoszenia”","piramidy i sfinks","wieża minaret","drewniany dach bez okien"], c:0 },
-  { q:"Wnętrze Hagii Sophii zdobiono m.in.:", a:["mozaikami, marmurami i złotymi ozdobami","głównie drewnem i gliną","wyłącznie freskami bez mozaik","samymi kamieniami bez ozdób"], c:0 },
-  { q:"Styl bizantyjski kojarzył się z:", a:["przepychem, kopułami i mozaikami","prostotą i brakiem ozdób","drewnianymi chatach","samymi piramidami"], c:0 },
-  { q:"Jedno z osiągnięć Bizancjum to:", a:["ratowanie rękopisów ze starożytności","wynalezienie prochu","odkrycie Ameryki","wprowadzenie alfabetu łacińskiego"], c:0 },
-  { q:"Bizancjum przez wieki atakowali m.in.:", a:["Słowianie, Arabowie, Turcy","Grecy, Rzymianie, Wikingowie","Majowie, Aztekowie, Inkowie","Japończycy, Chińczycy, Hindusi"], c:0 },
-  { q:"Skutkiem zdobycia Konstantynopola w 1453 r. była:", a:["śmierć ostatniego cesarza","powstanie Bizancjum","koronacja Karola Wielkiego","podpisanie konkordatu"], c:0 },
-  { q:"Arabowie przed islamem mieszkali na:", a:["Półwyspie Arabskim","Półwyspie Iberyjskim","Półwyspie Apenińskim","Półwyspie Skandynawskim"], c:0 },
-  { q:"Arabowie przed islamem żyli głównie:", a:["koczowniczo","w wielkich miastach przemysłowych","tylko na wybrzeżu","w dżungli"], c:0 },
-  { q:"Ważna miejscowość Arabów przed islamem to:", a:["Mekka","Ateny","Konstantynopol","Gniezno"], c:0 },
-  { q:"Kaaba znajduje się w:", a:["Mekce","Medynie","Konstantynopolu","Rzymie"], c:0 },
-  { q:"Czarny Kamień jest związany z:", a:["Kaabą i Mekką","Kodeksem Justyniana","traktatem w Verdun","Canossą"], c:0 },
-  { q:"Islam to religia:", a:["monoteistyczna","politeistyczna","bez bogów","oparta na wielu bogach"], c:0 },
-  { q:"Jak nazywa się Bóg w islamie?", a:["Allah","Jahwe","Zeus","Chrystus"], c:0 },
-  { q:"Koran to:", a:["święta księga islamu","święta księga chrześcijan","kodeks prawa rzymskiego","traktat pokojowy"], c:0 },
-  { q:"Modlitwa jest filarem islamu i odbywa się:", a:["5 razy dziennie w stronę Mekki","1 raz w tygodniu w stronę Rzymu","2 razy dziennie w stronę Konstantynopola","10 razy dziennie w stronę Medyny"], c:0 },
-  { q:"Minaret to:", a:["wieża, z której wzywa się do modlitwy","wnęka pokazująca kierunek Mekki","kazalnica","kopuła bazyliki"], c:0 },
-  { q:"Mihrab to:", a:["wnęka pokazująca kierunek Mekki","wieża przy meczecie","kazalnica","mury obronne"], c:0 },
-  { q:"Minbar to:", a:["kazalnica","wieża przy meczecie","wnęka wskazująca kierunek Mekki","łańcuchy przeciw okrętom"], c:0 },
-  { q:"Po śmierci Mahometa rządzili:", a:["kalifowie","patriarchowie","majordomowie","Merowingowie"], c:0 },
-  { q:"Dżihad oznacza:", a:["walkę w obronie wiary","zakaz handlu","pokój między religiami","wybór biskupów"], c:0 },
-  { q:"W VII–VIII w. Arabowie podbili ziemie:", a:["od Indii po Hiszpanię (przez Bliski Wschód i Afrykę Płn.)","tylko Skandynawię","tylko Polskę i Węgry","tylko Amerykę Północną"], c:0 },
-  { q:"Jednym z osiągnięć Arabów był rozwój:", a:["matematyki i nauk (np. cyfry arabskie)","budowy piramid","feudalizmu w Europie","traktatów w Verdun"], c:0 },
-  { q:"Frankowie osiedlili się w:", a:["Galii","Italii","Hispanii","Arabii"], c:0 },
-  { q:"Chlodwig przyjął chrześcijaństwo w roku:", a:["496","395","732","843"], c:0 },
-  { q:"Dynastia rządząca u Franków za czasów Chlodwiga to:", a:["Merowingowie","Karolingowie","Piastowie","Jagiellonowie"], c:0 },
-  { q:"Majordomowie to:", a:["osoby mające realną władzę u Franków","mnisi w Bizancjum","kalifowie po Mahomecie","patriarchowie Konstantynopola"], c:0 },
-  { q:"Pepin Mały przejął władzę w roku:", a:["751","732","800","962"], c:0 },
-  { q:"Dynastia Pepina i Karola Wielkiego to:", a:["Karolingowie","Merowingowie","Habsburgowie","Romanowowie"], c:0 },
-  { q:"Bitwa pod Poitiers (732 r.) zakończyła się:", a:["zatrzymaniem najazdu Arabów na Europę Zachodnią","zdobyciem Konstantynopola","podziałem państwa Franków","wielką schizmą wschodnią"], c:0 },
-  { q:"Karol Wielki został koronowany na cesarza w:", a:["800","843","962","1054"], c:0 },
-  { q:"Traktat w Verdun (843 r.) oznaczał:", a:["podział państwa na 3 części","koniec Bizancjum","początek islamu","zakończenie sporu o inwestyturę"], c:0 },
-  { q:"Z podziału po Verdun w przyszłości powstały:", a:["Francja, Niemcy, Włochy","Polska, Czechy, Węgry","Hiszpania, Portugalia, Anglia","Szwecja, Norwegia, Dania"], c:0 },
-  { q:"Wielka schizma wschodnia miała miejsce w:", a:["1054","1077","1122","1453"], c:0 },
-  { q:"Skutkiem schizmy był podział chrześcijaństwa na:", a:["katolicyzm i prawosławie","islam i judaizm","protestantyzm i islam","pogaństwo i chrześcijaństwo"], c:0 },
-  { q:"Inwestytura to spór o:", a:["mianowanie biskupów","zdobycie Konstantynopola","podział państwa Franków","pięć filarów islamu"], c:0 },
-  { q:"Papież w sporze o inwestyturę to:", a:["Grzegorz VII","Henryk IV","Justynian I","Karol Wielki"], c:0 },
-  { q:"Cesarz w sporze o inwestyturę to:", a:["Henryk IV","Grzegorz VII","Mahomet","Chlodwig"], c:0 },
-  { q:"Canossa (1077 r.) to:", a:["spotkanie Henryka IV z papieżem i prośba o cofnięcie klątwy","podział państwa na 3 części","zdobycie Konstantynopola","hidżra"], c:0 },
-  { q:"Konkordat w Wormacji podpisano w:", a:["1122","1054","843","622"], c:0 },
-  { q:"Kompromis w Wormacji oznaczał, że biskupów wybiera:", a:["Kościół","cesarz","kalif","majordom"], c:0 },
-  { q:"Wśród najważniejszych dat jest koronacja Ottona I w roku:", a:["962","800","751","496"], c:0 },
+  { q:"Do krain geograficznych pasa wyżyn i gór należą:", a:["Śląska, Krakowsko-Częstochowska, Małopolska, Lubelska, Sudety, Karpaty","Mazury, Pomorze, Sudety, Karpaty","Podlasie, Wyżyna Śląska, Tatry, Żuławy","Kotlina Sandomierska, Pobrzeża, Sudety"], c:0 },
+  { q:"Najwyższym pasmem Sudetów są:", a:["Tatry","Karkonosze","Bieszczady","Pieniny"], c:1 },
+  { q:"Podhale to region kulturowy u podnóża:", a:["Sudetów","Gór Świętokrzyskich","Tatr","Bieszczadów"], c:2 },
+  { q:"Mieszkańcy Tatr i Podhala to głównie:", a:["Ślązacy","górale podhalańscy","Kaszubi","Mazurzy"], c:1 },
+  { q:"Bryza morska jest charakterystyczna dla:", a:["krajobrazu nadmorskiego","krajobrazu górskiego","krajobrazu krasowego","Wyżyny Śląskiej"], c:0 },
+  { q:"Jaskinia Łokietka znajduje się w:", a:["Tatrach","Ojcowskim Parku Narodowym","na Wyżynie Śląskiej","w Bieszczadach"], c:1 }
 ];
 
   // ===================== ABC: build/render/check/reset =====================
@@ -506,215 +471,276 @@ function attachProgressListenersABC(){
   // ===================== DATA: OPEN (BAZA > 10) =====================
   // TYLKO to, co już masz: te same odpowiedzi/pojęcia, inne sformułowania.
   const openBase = [
-    {
-  q:"Co to było Bizancjum?",
-  accepted:["Cesarstwo Wschodniorzymskie","Cesarstwo Bizantyjskie"],
-  must:["cesarstw"],
-  any:["wschodniorzymsk","bizantyj"],
-  explain:"Np. Cesarstwo Wschodniorzymskie (Bizancjum)."
-},
-{
-  q:"Podaj stolicę Bizancjum.",
-  accepted:["Konstantynopol"],
-  must:["konstantynopol"],
-  explain:"Konstantynopol."
-},
-{
-  q:"Wymień 5 filarów islamu.",
-  accepted:[
-    "wyznanie wiary, modlitwa, jałmużna, post, pielgrzymka",
-    "wiara, modlitwa, jałmużna, post, pielgrzymka do Mekki"
-  ],
-  requiredStemsAnyOf:["wiar","modlitw","jalmu","post","pielgrzym"],
-  minMatch:4,
-  explain:"Wyznanie wiary, modlitwa, jałmużna, post, pielgrzymka do Mekki."
-},
-{
-  q:"Co to była hidżra i w którym roku?",
-  accepted:[
-    "Ucieczka Mahometa z Mekki do Medyny w 622 roku",
-    "Ucieczka Mahometa do Medyny w 622"
-  ],
-  must:["ucieczk","medyn","622"],
-  explain:"Ucieczka Mahometa z Mekki do Medyny w 622 r."
-},
-{
-  q:"Podaj rok koronacji Karola Wielkiego na cesarza.",
-  accepted:["800","800 r.","w 800 roku"],
-  must:["800"],
-  explain:"800 r."
-},
-{
-  q:"Co ustalił traktat w Verdun (843 r.)?",
-  accepted:[
-    "Podział państwa Karola Wielkiego na trzy części",
-    "Podział państwa Franków na trzy części"
-  ],
-  must:["podzial","trz"],
-  any:["verdun","panstw","frank","karol"],
-  explain:"Podział państwa Karola Wielkiego na 3 części."
-},
-{
-  q:"Co wydarzyło się w 1054 roku?",
-  accepted:[
-    "Wielka schizma wschodnia",
-    "Podział Kościoła na katolicki i prawosławny"
-  ],
-  any:["schizm","podzial kosciola","katolic","prawoslaw"],
-  explain:"Wielka schizma wschodnia – podział na katolicyzm i prawosławie."
-},
-{
-  q:"Na czym polegał spór o inwestyturę?",
-  accepted:[
-    "Spór o to, kto ma mianować biskupów",
-    "Spór o prawo mianowania biskupów"
-  ],
-  must:["biskup"],
-  any:["mianow","wybier","inwestyt"],
-  explain:"Spór o mianowanie (wybór) biskupów."
-},
-{
-  q:"Co wydarzyło się w Canossie (1077 r.)?",
-  accepted:[
-    "Spotkanie papieża Grzegorza VII z cesarzem Henrykiem IV",
-    "Henryk IV prosił papieża o zdjęcie klątwy"
-  ],
-  must:["1077"],
-  any:["canoss","henryk","grzegorz","klatw","papiez"],
-  explain:"W 1077 r. Henryk IV spotkał się z papieżem Grzegorzem VII w Canossie (prosił o cofnięcie klątwy)."
-},
-{
-  q:"Jak nazywa się porozumienie z 1122 r., które zakończyło spór o inwestyturę?",
-  accepted:[
-    "Konkordat w Wormacji",
-    "Konkordat wormacki"
-  ],
-  must:["1122"],
-  any:["wormac","konkordat"],
-  explain:"Konkordat w Wormacji (1122 r.)."
-},
-
-// dodatkowe – te same informacje, inne pytanie
-{
-  q:"Jak inaczej nazywamy Bizancjum?",
-  accepted:["Cesarstwo Bizantyjskie","Cesarstwo Wschodniorzymskie"],
-  must:["cesarstw"],
-  any:["bizantyj","wschodniorzymsk"],
-  explain:"Cesarstwo Bizantyjskie / Wschodniorzymskie."
-},
-{
-  q:"Podaj rok hidżry (początek ery muzułmańskiej).",
-  accepted:["622","622 r.","w 622 roku"],
-  must:["622"],
-  explain:"622 r."
-},
-{
-  q:"Podaj rok traktatu w Verdun.",
-  accepted:["843","843 r.","w 843 roku"],
-  must:["843"],
-  explain:"843 r."
-},
-{
-  q:"Podaj rok bitwy pod Poitiers.",
-  accepted:["732","732 r.","w 732 roku"],
-  must:["732"],
-  explain:"732 r."
-},
-{
-  q:"Podaj kto dowodził Frankami pod Poitiers.",
-  accepted:["Karol Młot","Karol Mlot"],
-  must:["karol"],
-  any:["mlot"],
-  explain:"Karol Młot."
-},
-
-// === DODATKOWE PYTANIA OTWARTE (z notatek/fiszek) ===
-{
-  q:"Dlaczego Konstantynopol był ważny? Podaj 2 powody.",
-  accepted:["położenie Europa–Azja i handel","położenie (Europa i Azja) oraz centrum handlu","silne mury i handel","centrum handlu i silne umocnienia"],
-  any:["europ","azj","handl","mury","bosfor","bron"],
-  explain:"Np. położenie na granicy Europy i Azji + centrum handlu (albo silne umocnienia)."
-},
-{
-  q:"Co kazał spisać Justynian I? (jak nazywa się ten zbiór?)",
-  accepted:["prawo rzymskie (Kodeks Justyniana)","Kodeks Justyniana","spisane prawo rzymskie"],
-  must:["kodeks"],
-  any:["justyn","prawo rzymsk"],
-  explain:"Spisane prawo rzymskie – Kodeks Justyniana."
-},
-{
-  q:"W jakim wieku przypada największa świetność Bizancjum?",
-  accepted:["VI","VI w.","w VI wieku"],
-  must:["vi"],
-  explain:"VI wiek."
-},
-{
-  q:"Co to jest Hagia Sophia?",
-  accepted:["wielka bazylika w Konstantynopolu","bazylika w Konstantynopolu"],
-  must:["konstantynopol"],
-  any:["bazylik","hagia"],
-  explain:"Wielka bazylika w Konstantynopolu."
-},
-{
-  q:"Podaj 2 przykłady ozdób/elementów wnętrza kościołów bizantyjskich.",
-  accepted:["mozaiki i freski","mozaiki, marmury, złote ozdoby","mozaiki i marmury"],
-  any:["mozaik","fresk","marmur","zlot"],
-  explain:"Np. mozaiki i freski (albo marmury, złote ozdoby)."
-},
-{
-  q:"Gdzie znajduje się Kaaba?",
-  accepted:["w Mekce","Mekka"],
-  must:["mek"],
-  any:["kaab"],
-  explain:"Kaaba znajduje się w Mekce."
-},
-{
-  q:"Jak nazywa się świątynia związana z Czarnym Kamieniem?",
-  accepted:["Kaaba","Kaaba w Mekce"],
-  must:["kaab"],
-  explain:"Kaaba (w Mekce)."
-},
-{
-  q:"Ile razy dziennie modlą się muzułmanie i w którą stronę?",
-  accepted:["5 razy dziennie w stronę Mekki","pięć razy dziennie w stronę Mekki"],
-  must:["5"],
-  any:["mekk","stron"],
-  explain:"5 razy dziennie w stronę Mekki."
-},
-{
-  q:"Co to jest minaret?",
-  accepted:["wieża przy meczecie (wezwanie do modlitwy)","wieża, z której wzywa się do modlitwy"],
-  must:["wiez"],
-  any:["minaret","modlitw"],
-  explain:"Minaret – wieża, z której wzywa się do modlitwy."
-},
-{
-  q:"Co to jest mihrab?",
-  accepted:["wnęka pokazująca kierunek Mekki","wnęka wskazująca kierunek Mekki"],
-  must:["wnek"],
-  any:["mekk","mihrab","kierunek"],
-  explain:"Mihrab – wnęka pokazująca kierunek Mekki."
-},
-{
-  q:"Co to jest minbar?",
-  accepted:["kazalnica","kazalnica w meczecie"],
-  must:["kazal"],
-  any:["minbar","meczet"],
-  explain:"Minbar – kazalnica (w meczecie)."
-},
-{
-  q:"Kim byli majordomowie u Franków?",
-  accepted:["mieli realną władzę","to oni mieli realną władzę","realnie rządzili państwem"],
-  any:["realn","wladz","majordom"],
-  explain:"Majordomowie mieli realną władzę (faktycznie rządzili)."
-},
-{
-  q:"Podaj rok koronacji Ottona I.",
-  accepted:["962","962 r.","w 962 roku"],
-  must:["962"],
-  explain:"962 r."
-},
-  ];
+  {
+    q:"Na jakiej wysokości położone są obszary wyżynne w Polsce?",
+    accepted:["300–500 m n.p.m.","od 300 do 500 m n.p.m."],
+    must:["300","500"],
+    explain:"Wyżyny są położone na wysokości 300–500 m n.p.m."
+  },
+  {
+    q:"Na jakiej wysokości położone są góry w Polsce?",
+    accepted:["powyżej 500 m n.p.m.","ponad 500 m n.p.m."],
+    must:["500"],
+    any:["powyzej","ponad"],
+    explain:"Góry leżą powyżej 500 m n.p.m."
+  },
+  {
+    q:"Co to jest less?",
+    accepted:["drobny pył osadowy o żółtym zabarwieniu","skała osadowa z drobnych ziarenek o żółtej barwie"],
+    any:["pyl","osadow","zol","drobn"],
+    explain:"Less to drobny pył osadowy o żółtej barwie."
+  },
+  {
+    q:"Co to jest wąwóz?",
+    accepted:["sucha dolina o stromych zboczach i wąskim dnie","forma terenu o stromych zboczach i wąskim dnie"],
+    must:["strom"],
+    any:["dolin","wask","such"],
+    explain:"Wąwóz to sucha dolina o stromych zboczach i wąskim dnie."
+  },
+  {
+    q:"Dlaczego na Wyżynie Lubelskiej rozwinęło się rolnictwo?",
+    accepted:["bo występują tam żyzne gleby, np. czarnoziemy","dzięki żyznym glebom powstałym na lessie"],
+    any:["zyzn","gleb","czarnoziem","less"],
+    explain:"Rolnictwo rozwinęło się tam dzięki żyznym glebom, m.in. czarnoziemom."
+  },
+  {
+    q:"Wymień 3 rośliny uprawiane na Wyżynie Lubelskiej.",
+    accepted:["pszenica, buraki cukrowe, rzepak","pszenica, chmiel, tytoń","buraki cukrowe, len, rzepak"],
+    requiredStemsAnyOf:["pszenic","burak","rzepak","tyton","chmiel","len"],
+    minMatch:3,
+    explain:"Np. pszenica, buraki cukrowe, rzepak."
+  },
+  {
+    q:"Do czego wykorzystuje się rzepak?",
+    accepted:["do produkcji oleju i biopaliwa","na olej i biopaliwo"],
+    must:["olej"],
+    any:["biopaliw","rzepak"],
+    explain:"Rzepak wykorzystuje się do produkcji oleju i biopaliwa."
+  },
+  {
+    q:"Do czego wykorzystuje się len?",
+    accepted:["do produkcji włókna i oleju","na włókno i olej"],
+    any:["wlokn","olej","len"],
+    explain:"Len służy do produkcji włókna i oleju."
+  },
+  {
+    q:"Co to jest krasowienie?",
+    accepted:["proces rozpuszczania skał wapiennych przez wodę","rozpuszczanie wapieni przez wodę"],
+    must:["rozpuszcz"],
+    any:["wap","wod","kras"],
+    explain:"Krasowienie to proces rozpuszczania skał wapiennych przez wodę."
+  },
+  {
+    q:"Jaka skała występuje w podłożu Wyżyny Krakowsko-Częstochowskiej?",
+    accepted:["wapień","skały wapienne"],
+    must:["wap"],
+    explain:"W podłożu występują skały wapienne."
+  },
+  {
+    q:"Wymień 2 formy krasu powierzchniowego.",
+    accepted:["ostańce krasowe i leje krasowe","ponor i wywierzysko","ostańce i żłobki krasowe"],
+    requiredStemsAnyOf:["ostanc","lej","ponor","wywierzysk","zlobk"],
+    minMatch:2,
+    explain:"Np. ostańce krasowe i leje krasowe."
+  },
+  {
+    q:"Wymień 2 formy krasu podziemnego.",
+    accepted:["jaskinie i stalaktyty","stalagmity i stalagnaty","jaskinie i stalagmity"],
+    requiredStemsAnyOf:["jaskin","stalakty","stalagmi","stalagn"],
+    minMatch:2,
+    explain:"Np. jaskinie i stalaktyty."
+  },
+  {
+    q:"Co to jest ponor?",
+    accepted:["miejsce, w którym rzeka znika pod ziemią","miejsce zanikania wody pod ziemię"],
+    must:["ziem"],
+    any:["rzeka","znika","ponor","woda"],
+    explain:"Ponor to miejsce, gdzie rzeka lub woda znika pod ziemią."
+  },
+  {
+    q:"Co to jest wywierzysko?",
+    accepted:["miejsce wypływu wód podziemnych na powierzchnię","źródło krasowe"],
+    any:["wyplyw","wod","podziemn","powierzch"],
+    explain:"Wywierzysko to miejsce wypływu wód podziemnych na powierzchnię."
+  },
+  {
+    q:"Co to jest jaskinia?",
+    accepted:["pusta przestrzeń w skale połączona systemem szczelin i korytarzy","podziemna pustka w skale"],
+    any:["przestrzen","skale","szczelin","korytarz"],
+    explain:"Jaskinia to pusta przestrzeń w skale, połączona szczelinami i korytarzami."
+  },
+  {
+    q:"Wyjaśnij różnicę między stalaktytem a stalagmitem.",
+    accepted:["stalaktyt zwisa ze stropu, a stalagmit rośnie od dna","stalaktyt jest u góry, stalagmit u dołu"],
+    must:["stalakty","stalagmi"],
+    any:["strop","dno","gora","dol"],
+    explain:"Stalaktyt zwisa ze stropu jaskini, a stalagmit narasta od dna."
+  },
+  {
+    q:"Co to jest stalagnat?",
+    accepted:["forma naciekowa powstała z połączenia stalaktytu i stalagmitu","połączenie stalaktytu i stalagmitu"],
+    must:["polaczen"],
+    any:["stalakty","stalagmi","stalagn"],
+    explain:"Stalagnat powstaje z połączenia stalaktytu i stalagmitu."
+  },
+  {
+    q:"Co to jest ostańec krasowy?",
+    accepted:["skała odporna na rozpuszczanie, wystająca ponad teren","wapienna skała wystająca ponad powierzchnię"],
+    any:["skala","wystaj","teren","wap"],
+    explain:"Ostańec krasowy to skała wystająca ponad teren, bardziej odporna na niszczenie."
+  },
+  {
+    q:"Co to jest Szlak Orlich Gniazd?",
+    accepted:["szlak zamków i warowni na Wyżynie Krakowsko-Częstochowskiej","szlak łączący zamki Jury Krakowsko-Częstochowskiej"],
+    must:["szlak"],
+    any:["zamk","warown","orlich gniazd","krakowsko"],
+    explain:"To szlak zamków i warowni na Wyżynie Krakowsko-Częstochowskiej."
+  },
+  {
+    q:"Co chroni Ojcowski Park Narodowy?",
+    accepted:["przyrodę krasową południowej części Wyżyny Krakowsko-Częstochowskiej","krajobraz krasowy"],
+    must:["kras"],
+    any:["ojcowsk","park","przyrod"],
+    explain:"Chroni przyrodę krasową, m.in. ostańce, doliny i jaskinie."
+  },
+  {
+    q:"Jak dzielimy Tatry?",
+    accepted:["na Tatry Wysokie i Tatry Zachodnie","Tatry Wysokie i Zachodnie"],
+    must:["tatry"],
+    any:["wysok","zachod"],
+    explain:"Tatry dzielą się na Tatry Wysokie i Tatry Zachodnie."
+  },
+  {
+    q:"Jaki jest najwyższy szczyt Polski i ile ma metrów?",
+    accepted:["Rysy – 2499 m n.p.m.","Rysy, 2499 m n.p.m."],
+    must:["rysy","2499"],
+    explain:"Najwyższym szczytem Polski są Rysy – 2499 m n.p.m."
+  },
+  {
+    q:"Czym różnią się Tatry Wysokie od Tatr Zachodnich?",
+    accepted:["Tatry Wysokie są zbudowane z granitów i mają ostre szczyty, a Tatry Zachodnie są wapienne i łagodniejsze","Wysokie są ostrzejsze i granitowe, a Zachodnie łagodniejsze i wapienne"],
+    must:["wysok","zachod"],
+    any:["granit","wap","ostr","lagod"],
+    explain:"Tatry Wysokie są granitowe i ostre, a Tatry Zachodnie wapienne i łagodniejsze."
+  },
+  {
+    q:"Co to jest turnia?",
+    accepted:["ostry, skalisty szczyt","skalisty ostry szczyt górski"],
+    must:["ostry"],
+    any:["skal","szczyt","turn"],
+    explain:"Turnia to ostry, skalisty szczyt."
+  },
+  {
+    q:"Co to jest przełęcz?",
+    accepted:["obniżenie grzbietu górskiego między dwoma szczytami","obniżenie między szczytami"],
+    any:["obnizen","miedzy","szczyt","przelecz"],
+    explain:"Przełęcz to obniżenie grzbietu górskiego między szczytami."
+  },
+  {
+    q:"Na czym polega piętrowość roślinności w górach?",
+    accepted:["roślinność zmienia się wraz z wysokością","wraz ze wzrostem wysokości występują różne piętra roślin"],
+    must:["wysok"],
+    any:["roslinn","zmienia","pietr"],
+    explain:"Piętrowość roślinności oznacza, że wraz z wysokością zmieniają się gatunki roślin."
+  },
+  {
+    q:"Wymień piętra roślinności w Tatrach.",
+    accepted:["pogórze, regiel dolny, regiel górny, kosodrzewina, hale, turnie","regiel dolny, regiel górny, kosodrzewina, hale, turnie"],
+    requiredStemsAnyOf:["pogorz","regiel doln","regiel gorn","kosodrzew","hal","turn"],
+    minMatch:4,
+    explain:"Pogórze, regiel dolny, regiel górny, kosodrzewina, hale, turnie."
+  },
+  {
+    q:"Co to jest halny?",
+    accepted:["ciepły, suchy i porywisty wiatr w Tatrach","silny ciepły wiatr w górach"],
+    any:["ciepl","such","wiatr","tatrach","haln"],
+    explain:"Halny to ciepły, suchy i porywisty wiatr w Tatrach."
+  },
+  {
+    q:"Jak zmienia się temperatura w górach wraz ze wzrostem wysokości?",
+    accepted:["spada","temperatura spada"],
+    must:["spad"],
+    any:["temperatur","wysok"],
+    explain:"W górach wraz z wysokością temperatura spada."
+  },
+  {
+    q:"Wymień 2 zwierzęta żyjące w Tatrach.",
+    accepted:["kozica i świstak","niedźwiedź i kozica","niedźwiedź i świstak"],
+    requiredStemsAnyOf:["kozic","swistak","niedzwiedz"],
+    minMatch:2,
+    explain:"Np. kozica i świstak."
+  },
+  {
+    q:"Co to jest hałda?",
+    accepted:["wzniesienie usypane z odpadów górniczych i przemysłowych","góra odpadów pogórniczych"],
+    any:["odpad","gornicz","przemysl","hald"],
+    explain:"Hałda to wzniesienie usypane z odpadów górniczych i przemysłowych."
+  },
+  {
+    q:"Co to są szkody górnicze?",
+    accepted:["uszkodzenia powierzchni terenu powstałe wskutek wydobycia","zniszczenia terenu spowodowane działalnością górniczą"],
+    any:["uszkodzen","teren","wydoby","gornicz"],
+    explain:"Szkody górnicze to uszkodzenia terenu spowodowane wydobyciem."
+  },
+  {
+    q:"Co to jest konurbacja?",
+    accepted:["skupisko wielu miast o podobnej wielkości i liczbie ludności","zespół połączonych miast"],
+    any:["skupisk","wielu miast","polacz","konurb"],
+    explain:"Konurbacja to skupisko wielu połączonych miast o podobnej wielkości."
+  },
+  {
+    q:"Jak nazywa się największy okręg przemysłowy na Wyżynie Śląskiej?",
+    accepted:["Górnośląski Okręg Przemysłowy","GOP"],
+    any:["gornoslask","okreg przemysl","gop"],
+    explain:"To Górnośląski Okręg Przemysłowy (GOP)."
+  },
+  {
+    q:"Podaj 2 negatywne skutki rozwoju przemysłu na Wyżynie Śląskiej.",
+    accepted:["zanieczyszczenie powietrza i wód","hałdy i szkody górnicze","zanieczyszczenia i hałdy"],
+    requiredStemsAnyOf:["zanieczysz","powietrz","wod","hald","szkody gornicz"],
+    minMatch:2,
+    explain:"Np. zanieczyszczenie powietrza i wód oraz powstawanie hałd."
+  },
+  {
+    q:"Co to jest rewitalizacja?",
+    accepted:["odnawianie i przekształcanie starych terenów poprzemysłowych","przywracanie wartości dawnym terenom i obiektom"],
+    any:["odnaw","przeksztalc","teren","poprzemysl","rewital"],
+    explain:"Rewitalizacja to odnawianie i przekształcanie zdegradowanych terenów, np. poprzemysłowych."
+  },
+  {
+    q:"Co to jest plan zagospodarowania przestrzennego?",
+    accepted:["dokument określający, co i gdzie można budować na danym terenie","plan mówiący, jakie tereny przeznacza się pod różne funkcje"],
+    any:["dokument","gdzie","budow","teren","plan"],
+    explain:"To dokument określający przeznaczenie terenów i zasady zabudowy."
+  },
+  {
+    q:"Na co zwraca się uwagę podczas oceny krajobrazu?",
+    accepted:["na przyrodę, architekturę i przestrzeń","na elementy przyrodnicze, architektoniczne i estetykę"],
+    requiredStemsAnyOf:["przyrod","architektur","przestrzen","estety"],
+    minMatch:3,
+    explain:"Podczas oceny krajobrazu bierze się pod uwagę przyrodę, architekturę, przestrzeń i estetykę."
+  },
+  {
+    q:"Podaj 2 działania, które mogą poprawić krajobraz najbliższej okolicy.",
+    accepted:["sprzątanie i sadzenie roślin","remont placu zabaw i tworzenie parków","dbanie o estetykę i porządek"],
+    requiredStemsAnyOf:["sprzat","sadzen","roslin","remont","park","estety","porzad"],
+    minMatch:2,
+    explain:"Np. sprzątanie okolicy i sadzenie roślin."
+  },
+  {
+    q:"Kim są mieszkańcy Tatr i Podhala?",
+    accepted:["góralami podhalańskimi","górale podhalańscy"],
+    must:["goral"],
+    any:["podhal"],
+    explain:"Mieszkańcy Tatr i Podhala to górale podhalańscy."
+  },
+  {
+    q:"Co to jest oscypek?",
+    accepted:["ser z mleka owczego wyrabiany przez górali","owczy ser regionalny"],
+    any:["ser","owcz","goral","oscypek"],
+    explain:"Oscypek to regionalny ser z mleka owczego."
+  }
+];
 
   // ===================== NORMALIZACJA (PL) + FUZZY =====================
   function normalizeText(t) {
